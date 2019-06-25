@@ -1,67 +1,67 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QSystemTrayIcon, QAction, QMenu, qApp, QMessageBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QSystemTrayIcon, QAction, QMenu, qApp, QMessageBox
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QCoreApplication
 
-# CONSTANT
-from constant.AppConstant import App
+from form.frmMain import Ui_MainWindow  # Main Window
+from config.LogConfig import LogConfig  # log
+from constant.AppConstant import App  # Constant
 import sys
 import logging
 
-if __name__ == '__main__':
 
-    logging.basicConfig(level=logging.DEBUG) # 只执行一次配置即可，后面将logging的配置封装一下
+class Main(object):
+    """docstring for Main"""
+    mainWindow = None
+    ui = None
+    tp = None
+    tpMenu = None
 
-    app = QApplication(sys.argv)
-    QApplication.setQuitOnLastWindowClosed(False)  # 设置所有窗口不会被关闭
-    mainWindow = QWidget()
-    # mainWindow.resize(250, 250)
-    mainWindow.move(300, 300)
-    mainWindow.setWindowTitle(App.MAIN_WINDOW_TITLE)
-    mainWindow.show()
+    a1 = None
+    a2 = None
 
-    tp = QSystemTrayIcon(mainWindow)
-    tp.setIcon(QIcon(App.ICON_PATH_NAME))  # todo 这个可能存在跨平台路径问题
+    def __init__(self):
+        super(Main, self).__init__()
 
-    a1 = QAction('&显示(Show)', triggered = mainWindow.show)
+    def quitApp(self):
+        QCoreApplication.instance().quit()
+        self.tp.setVisible(False)
 
+    def startMain(self):
+        self.mainWindow = QMainWindow()
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self.mainWindow)
 
-    def quitApp():
-        mainWindow.show()
-        re = QMessageBox.question(mainWindow, "提示", "退出系统", QMessageBox.Yes |
-                                  QMessageBox.No, QMessageBox.No)
-        if re == QMessageBox.Yes:
-            QCoreApplication.instance().quit()
-            tp.setVisible(False)
+        # mainWindow.resize(App.MAIN_WINDOW_WIDTH, App.MAIN_WINDOW_HEIGHT)
+        self.mainWindow.move(App.MAIN_WINDOW_LEFT, App.MAIN_WINDOW_TOP)
+        self.mainWindow.setWindowTitle(App.MAIN_WINDOW_TITLE)
+        self.mainWindow.show()
 
+    def startTray(self):
+        self.tp = QSystemTrayIcon(self.mainWindow)
+        self.tp.setIcon(QIcon(App.ICON_PATH_NAME))  # todo 这个可能存在跨平台路径问题
 
-    a2 = QAction('&退出(Exit)', triggered = quitApp)
+        self.tpMenu = QMenu()
 
-    tpMenu = QMenu()
-    tpMenu.addAction(a1)
-    tpMenu.addAction(a2)
-    tp.setContextMenu(tpMenu)
-    tp.show()
+        self.a1 = QAction(text='Show', triggered=self.mainWindow.show)
+        self.a2 = QAction(text='Exit', triggered=self.quitApp)
 
-    # 信息提示
-    # 参数1：标题
-    # 参数2：内容
-    # 参数3：图标（0没有图标 1信息图标 2警告图标 3错误图标），0还是有一个小图标
-    tp.showMessage('test', 'tray', icon=0)
+        self.tpMenu.addAction(self.a1)
+        self.tpMenu.addAction(self.a2)
+        self.tp.setContextMenu(self.tpMenu)
+        self.tp.activated.connect(self.act)
+        self.tp.show()
 
-
-    def message():
-        print("弹出的信息被点击了")
-
-
-    tp.messageClicked.connect(message)
-
-
-    def act(reason):
-        # 鼠标点击icon传递的信号会带有一个整形的值，1是表示单击右键，2是双击，3是单击左键，4是用鼠标中键点击
+    def act(self, reason):
         logging.debug(reason)
         if reason == 2 or reason == 3:
-            mainWindow.show()
+            self.mainWindow.show()
 
+if __name__ == '__main__':
+    app = QApplication(sys.argv)  # 接受命令行参数
+    QApplication.setQuitOnLastWindowClosed(False)  # 设置所有窗口不会被关闭
+    LogConfig()  # 配置log
 
-    tp.activated.connect(act)
+    main = Main()
+    main.startMain()
+    main.startTray()
     sys.exit(app.exec_())
