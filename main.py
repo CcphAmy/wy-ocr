@@ -21,7 +21,8 @@ def main():
     # 加载主窗口
     ui = Ui_MainWindow()
     ui.setupUi(mainWindow)
-    ui.pushButton.clicked.connect(screenShot.handleClick)
+    ui.btn_sreenShot.clicked.connect(screenShot.handleClick)
+    ui.btn_ocr.clicked.connect(ui.ocr)
     # mainWindow.resize(App.MAIN_WINDOW_WIDTH, App.MAIN_WINDOW_HEIGHT)
     mainWindow.move(App.MAIN_WINDOW_LEFT, App.MAIN_WINDOW_TOP)
     mainWindow.setWindowTitle(App.MAIN_WINDOW_TITLE)

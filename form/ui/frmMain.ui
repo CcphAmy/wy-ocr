@@ -24,17 +24,30 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="btn_sreenShot">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>20</y>
-      <width>80</width>
-      <height>25</height>
+      <x>10</x>
+      <y>10</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>1 =&gt; 测试截图</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_ocr">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>10</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>2 =&gt; 文字识别</string>
     </property>
    </widget>
   </widget>
@@ -51,22 +64,5 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>pushButton</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>51</x>
-     <y>47</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>51</x>
-     <y>47</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
