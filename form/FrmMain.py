@@ -7,7 +7,6 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QCoreApplication
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -31,13 +30,10 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.pushButton.clicked.connect(self.quitApp)
+        # self.pushButton.clicked.connect(self.action)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", "PushButton"))
-
-    def quitApp(self):
-        QCoreApplication.instance().quit()
